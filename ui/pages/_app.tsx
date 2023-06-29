@@ -9,7 +9,7 @@ const lightTheme = createTheme({
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
-		<NextUIProvider>
+		<NextUIProvider theme={lightTheme}>
 			<Component {...pageProps} />
 		</NextUIProvider>
 	);

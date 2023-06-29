@@ -8,12 +8,13 @@ export default function Home() {
 	useEffect(() => {
 		(async () => {
 			const { Mina, PublicKey } = await import('snarkyjs');
-			const { Add } = await import('../../../contracts/build/src/');
+			const { Add } = await import('../../contracts/build/src/');
 
 			// Update this to use the address (public key) for your zkApp account.
 			// To try it out, you can try this address for an example "Add" smart contract that we've deployed to
 			// Berkeley Testnet B62qkwohsqTBPsvhYE8cPZSpzJMgoKn4i1LQRuBAtVXWpaT4dgH6WoA.
-			const zkAppAddress = '';
+			const zkAppAddress =
+				'B62qkwohsqTBPsvhYE8cPZSpzJMgoKn4i1LQRuBAtVXWpaT4dgH6WoA';
 			// This should be removed once the zkAppAddress is updated.
 			if (!zkAppAddress) {
 				console.error(
