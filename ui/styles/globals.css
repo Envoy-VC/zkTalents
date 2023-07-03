@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+	font-family: 'OrkneyLight';
+	src: url('../public/fonts/orkney-light.otf');
+}
+
+@font-face {
+	font-family: 'OrkneyRegular';
+	src: url('../public/fonts/orkney-regular.otf');
+}
+
+@font-face {
+	font-family: 'OrkneyMedium';
+	src: url('../public/fonts/orkney-medium.otf');
+}
+
+@font-face {
+	font-family: 'OrkneyBold';
+	src: url('../public/fonts/orkney-bold.otf');
+}
