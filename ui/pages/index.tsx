@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
+	/*
 	useEffect(() => {
 		(async () => {
 			const { Mina, PublicKey } = await import('snarkyjs');
@@ -24,6 +25,7 @@ export default function Home() {
 			//const zkApp = new Add(PublicKey.fromBase58(zkAppAddress))
 		})();
 	}, []);
+	*/
 
 	return (
 		<main className={`${inter.className}`}>
