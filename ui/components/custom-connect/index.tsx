@@ -23,11 +23,11 @@ const CustomConnect = () => {
 				<Dropdown placement='bottom-right'>
 					<Dropdown.Trigger>
 						<Avatar
-							bordered
 							as='button'
 							color='secondary'
 							size='lg'
-							src='https://nextui.org/avatars/avatar-3.png'
+							src='https://avatars.githubusercontent.com/u/65389981?v=4'
+							crossOrigin='anonymous'
 						/>
 					</Dropdown.Trigger>
 					<Dropdown.Menu

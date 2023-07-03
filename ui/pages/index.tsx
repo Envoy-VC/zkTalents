@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
-import { NavBar, Toolbar } from '@/components';
+import React from 'react';
+import type { ReactElement } from 'react';
+
+import type { NextPageWithLayout } from './_app';
+import { Layout, Toolbar } from '@/components';
 
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
-export default function Home() {
+const Home: NextPageWithLayout = () => {
 	/*
 	useEffect(() => {
 		(async () => {
@@ -29,8 +32,13 @@ export default function Home() {
 
 	return (
 		<main className={`${inter.className}`}>
-			<NavBar />
 			<Toolbar />
 		</main>
 	);
-}
+};
+
+Home.getLayout = function getLayout(page: ReactElement) {
+	return <Layout>{page}</Layout>;
+};
+
+export default Home;
