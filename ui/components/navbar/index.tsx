@@ -1,7 +1,18 @@
 import React from 'react';
-import { Navbar, Link, Button } from '@nextui-org/react';
+import { Navbar, Image } from '@nextui-org/react';
+import CustomConnect from '../custom-connect';
+
+import logo from '../../public/logo.png';
+
+export type NavBarItems = 'find' | 'messages' | 'hire' | 'community';
 
 const NavBar = () => {
+	const [activeTab, setActiveTab] = React.useState<NavBarItems>('find');
+
+	const handleChangeTab = (tab: NavBarItems) => {
+		setActiveTab(tab);
+	};
+
 	return (
 		<Navbar
 			variant='sticky'
@@ -13,33 +24,54 @@ const NavBar = () => {
 			maxWidth='fluid'
 		>
 			<Navbar.Brand>
-				<p className='text-2xl font-bold tracking-wide orkneyMedium'>
-					zkTalents
-				</p>
+				<div className='flex flex-row items-center justify-start w-full p-8 px-8 sm:px-12'>
+					<div>
+						<Image
+							src={logo.src}
+							alt='zkTalents Logo'
+							width={36}
+							height={36}
+							className='!w-[28px] !h-[28px] sm:!w-[32px] sm:!h-[32px]'
+						/>
+					</div>
+					<div className='mx-2 text-[1rem] sm:text-[1.35rem] tracking-wide font-bold orkneyMedium'>
+						zkTalents
+					</div>
+				</div>
 			</Navbar.Brand>
 			<Navbar.Content
 				activeColor='neutral'
-				hideIn='xs'
+				hideIn='md'
 				variant='underline'
 				underlineHeight='bold'
 			>
-				<Navbar.Link isActive href='#'>
+				<Navbar.Link
+					isActive={activeTab === 'find'}
+					onPress={() => handleChangeTab('find')}
+				>
 					Find Job
 				</Navbar.Link>
-				<Navbar.Link href='#'>Messages</Navbar.Link>
-				<Navbar.Link href='#'>Hiring</Navbar.Link>
-				<Navbar.Link href='#'>Community</Navbar.Link>
+				<Navbar.Link
+					isActive={activeTab === 'messages'}
+					onPress={() => handleChangeTab('messages')}
+				>
+					Messages
+				</Navbar.Link>
+				<Navbar.Link
+					isActive={activeTab === 'hire'}
+					onPress={() => handleChangeTab('hire')}
+				>
+					Hiring
+				</Navbar.Link>
+				<Navbar.Link
+					isActive={activeTab === 'community'}
+					onPress={() => handleChangeTab('community')}
+				>
+					Community
+				</Navbar.Link>
 			</Navbar.Content>
 			<Navbar.Content>
-				<Button
-					auto
-					size='md'
-					color='primary'
-					href='#'
-					className='bg-[#0072F5] text-[1rem]'
-				>
-					Sign Up
-				</Button>
+				<CustomConnect />
 			</Navbar.Content>
 		</Navbar>
 	);
