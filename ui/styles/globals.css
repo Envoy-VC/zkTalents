@@ -21,3 +21,11 @@
 	font-family: 'OrkneyBold';
 	src: url('../public/fonts/orkney-bold.otf');
 }
+
+input[type='file']::file-selector-button {
+	border: none;
+	outline: none;
+	background: #141414;
+	color: #fff;
+	cursor: pointer;
+}

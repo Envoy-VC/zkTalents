@@ -12,7 +12,7 @@ const SalaryDropdown = () => {
 	const [selectedSalary, setSelectedSalary] =
 		React.useState<SalaryTypes>('all');
 	return (
-		<div>
+		<div className='font-orkneyRegular'>
 			<Dropdown>
 				<Dropdown.Button className='!bg-[#141414]'>
 					<div className='flex flex-row items-center gap-4 !w-[160px]'>

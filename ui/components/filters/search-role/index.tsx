@@ -10,7 +10,7 @@ interface Props {
 
 const SearchFilter = () => {
 	return (
-		<div className='!text-white'>
+		<div className='!text-white font-orkneyRegular'>
 			<Input
 				clearable
 				contentLeft={

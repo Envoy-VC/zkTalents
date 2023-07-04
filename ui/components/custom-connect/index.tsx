@@ -8,7 +8,7 @@ import { NavBarItems } from '../navbar';
 const CustomConnect = () => {
 	const account = 'abc';
 	return (
-		<div className='flex flex-row items-center gap-2'>
+		<div className='flex flex-row items-center gap-2 font-orkneyRegular'>
 			{!account ? (
 				<Button
 					auto

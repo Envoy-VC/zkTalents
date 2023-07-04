@@ -12,7 +12,7 @@ const ExperienceDropdown = () => {
 	const [selectedExperience, setSelectedExperience] =
 		React.useState<ExperienceTypes>('intern');
 	return (
-		<div>
+		<div className='font-orkneyRegular'>
 			<Dropdown>
 				<Dropdown.Button className='!bg-[#141414] !w-fit'>
 					<div className='flex flex-row items-center gap-4 !w-[160px]'>
