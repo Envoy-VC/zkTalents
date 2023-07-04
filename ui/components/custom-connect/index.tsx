@@ -4,18 +4,29 @@ import { Button, Dropdown, Avatar } from '@nextui-org/react';
 import { Notification, Setting } from 'react-iconly';
 
 import { NavBarItems } from '../navbar';
+import { MinaContext } from '../layout';
 
 const CustomConnect = () => {
-	const account = 'abc';
+	const { address, setAddress } = React.useContext(MinaContext);
+	const handleConnect = async () => {
+		try {
+			let addresses = await (window as any).mina.requestAccounts();
+			setAddress(addresses[0]);
+			console.log(addresses);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<div className='flex flex-row items-center gap-2 font-orkneyRegular'>
-			{!account ? (
+			{!address ? (
 				<Button
 					auto
 					size='md'
 					color='primary'
 					href='#'
 					className='bg-[#0072F5] text-[1rem]'
+					onPress={handleConnect}
 				>
 					Sign Up
 				</Button>
@@ -35,6 +46,12 @@ const CustomConnect = () => {
 						css={{ color: '#373737' }}
 						onAction={(actionKey) => console.log(actionKey)}
 					>
+						<Dropdown.Item key='none' className='h-12 py-8'>
+							<div className='flex font-bold'>Signed in as</div>
+							<div className='flex font-bold'>
+								{address!.slice(0, 10) + '...' + address!.slice(45)}
+							</div>
+						</Dropdown.Item>
 						<Dropdown.Item key='find'>Find Job</Dropdown.Item>
 						<Dropdown.Item key='messages'>Messages</Dropdown.Item>
 						<Dropdown.Item key='hire'>Hiring</Dropdown.Item>
@@ -46,7 +63,7 @@ const CustomConnect = () => {
 					</Dropdown.Menu>
 				</Dropdown>
 			)}
-			{account && (
+			{address && (
 				<div className='flex flex-row gap-2'>
 					<Button
 						light

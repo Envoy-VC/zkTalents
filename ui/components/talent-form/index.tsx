@@ -6,11 +6,13 @@ import AdminDetails from './admin-details';
 export type CreateFormStepProps = 'basic' | 'settings';
 
 export interface FormProps {
+	dateCreated?: string;
 	companyName: string;
 	companyLogo: string;
 	talentTitle: string;
 	location: string;
 	salary: number;
+	requirements?: any[];
 }
 
 const TalentForm = () => {

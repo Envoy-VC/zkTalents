@@ -23,7 +23,7 @@ const nextConfig = {
 					},
 					{
 						key: 'Cross-Origin-Embedder-Policy',
-						value: 'unsafe-none',
+						value: 'require-corp',
 					},
 				],
 			},

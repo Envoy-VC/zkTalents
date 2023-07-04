@@ -10,7 +10,7 @@ interface Props {
 
 const SearchFilter = () => {
 	return (
-		<div className='!text-white font-orkneyRegular'>
+		<div className='font-orkneyRegular'>
 			<Input
 				clearable
 				contentLeft={
@@ -19,9 +19,7 @@ const SearchFilter = () => {
 					</div>
 				}
 				contentLeftStyling={false}
-				className='!text-transparent'
 				css={{
-					color: 'CurrentColor',
 					w: '100%',
 					'@xsMax': {
 						mw: '300px',
@@ -34,6 +32,9 @@ const SearchFilter = () => {
 					},
 					'& .nextui-input-wrapper': {
 						backgroundColor: '#141414',
+					},
+					'& .nextui-input': {
+						color: '#fff',
 					},
 				}}
 				placeholder='Search...'
