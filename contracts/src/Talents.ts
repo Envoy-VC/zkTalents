@@ -9,10 +9,10 @@ import {
   PublicKey,
   Signature,
   AccountUpdate,
-  PrivateKey,
 } from 'snarkyjs';
 
-const ORACLE_PUBLIC_KEY = 'oracle_public_key';
+const ORACLE_PUBLIC_KEY =
+  'B62qkyP8a2RfB5dZbdoRSWQqmbsdkTNWA8aDWNWt8ocndZhL7qqtgFD';
 
 export class Talents extends SmartContract {
   @state(PublicKey) oraclePublicKey = State<PublicKey>();
