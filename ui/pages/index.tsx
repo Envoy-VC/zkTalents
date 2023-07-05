@@ -4,6 +4,8 @@ import type { ReactElement } from 'react';
 import type { NextPageWithLayout } from './_app';
 import { Layout, Toolbar } from '@/components';
 
+import NestedLayout from '@/components/layout/nested-layout';
+
 import { JobCard } from '@/components';
 
 const Home: NextPageWithLayout = () => {
@@ -25,7 +27,11 @@ const Home: NextPageWithLayout = () => {
 };
 
 Home.getLayout = function getLayout(page: ReactElement) {
-	return <Layout>{page}</Layout>;
+	return (
+		<Layout>
+			<NestedLayout>{page}</NestedLayout>
+		</Layout>
+	);
 };
 
 export default Home;

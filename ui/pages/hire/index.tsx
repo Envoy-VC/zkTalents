@@ -1,10 +1,11 @@
 import React from 'react';
 import type { ReactElement } from 'react';
 
+import NestedLayout from '@/components/layout/nested-layout';
 import type { NextPageWithLayout } from '../_app';
 import { Layout, TalentForm } from '@/components';
 
-const Home: NextPageWithLayout = () => {
+const Hire: NextPageWithLayout = () => {
 	return (
 		<div>
 			<TalentForm />
@@ -12,8 +13,12 @@ const Home: NextPageWithLayout = () => {
 	);
 };
 
-Home.getLayout = function getLayout(page: ReactElement) {
-	return <Layout>{page}</Layout>;
+Hire.getLayout = function getLayout(page: ReactElement) {
+	return (
+		<Layout>
+			<NestedLayout>{page}</NestedLayout>
+		</Layout>
+	);
 };
 
-export default Home;
+export default Hire;

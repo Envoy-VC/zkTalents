@@ -30,6 +30,10 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 		setTagList([...list]);
 	};
 
+	React.useEffect(() => {
+		form.tagList = tagList;
+	}, [tagList]);
+
 	return (
 		<div className='flex flex-col justify-center max-w-screen-md gap-6 mx-auto my-8 font-orkneyRegular'>
 			<div className='mb-16 text-4xl font-bold text-center'>Talent Details</div>
@@ -42,6 +46,8 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 						size='xl'
 						clearable
 						className='mt-4 max-w-[250px]'
+						initialValue={form.companyName ? form.companyName : ''}
+						onChange={(e) => (form.companyName = e.target.value)}
 					/>
 					<Input
 						label='Talent Title*'
@@ -49,9 +55,12 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 						size='xl'
 						clearable
 						className='mt-4 max-w-[450px]'
+						initialValue={form.talentTitle ? form.talentTitle : ''}
+						onChange={(e) => (form.talentTitle = e.target.value)}
 					/>
 				</div>
 				<div className='flex flex-col items-center justify-center'>
+					{/* // TODO: Add image upload */}
 					<Avatar
 						src='https://avatars.githubusercontent.com/u/65389981?v=4'
 						className='mb-4 rounded-full !w-28 !h-28'
@@ -80,15 +89,18 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 					placeholder='New York, NY'
 					size='xl'
 					className='mt-4 min-w-[300px]'
+					initialValue={form.location ? form.location : ''}
+					onChange={(e) => (form.location = e.target.value)}
 				/>
 				<Input
 					label='Salary($ per annum)*'
-					type='number'
+					type='string'
 					placeholder='100000'
-					step={1000}
 					required
 					size='xl'
 					className='mt-4 min-w-[300px]'
+					initialValue={form.salary ? form.salary : ''}
+					onChange={(e) => (form.salary = e.target.value)}
 				/>
 			</div>
 

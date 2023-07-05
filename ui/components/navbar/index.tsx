@@ -4,7 +4,12 @@ import CustomConnect from '../custom-connect';
 import { useRouter } from 'next/navigation';
 import logo from '../../public/logo.png';
 
-export type NavBarItems = 'find' | 'messages' | 'hire' | 'community';
+export type NavBarItems =
+	| 'find'
+	| 'messages'
+	| 'hire'
+	| 'community'
+	| 'dashboard';
 
 const NavBar = () => {
 	const router = useRouter();
@@ -14,6 +19,7 @@ const NavBar = () => {
 		setActiveTab(tab);
 		if (tab === 'find') router.push('/');
 		else if (tab === 'hire') router.push('/hire');
+		else if (tab === 'dashboard') router.push('/dashboard');
 	};
 
 	return (
@@ -73,6 +79,12 @@ const NavBar = () => {
 					onPress={() => handleChangeTab('community')}
 				>
 					Community
+				</Navbar.Link>
+				<Navbar.Link
+					isActive={activeTab === 'dashboard'}
+					onPress={() => handleChangeTab('dashboard')}
+				>
+					Dashboard
 				</Navbar.Link>
 			</Navbar.Content>
 			<Navbar.Content>

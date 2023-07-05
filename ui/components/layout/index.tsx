@@ -3,6 +3,15 @@ import { createTheme, NextUIProvider } from '@nextui-org/react';
 import NavBar from '../navbar';
 import { zkTalentsPublicKey } from '@/config';
 import { Talents } from '@envoy1084/zktalents';
+import { POLYBASE_NAMESPACE } from '@/config';
+import { PolybaseProvider } from '@polybase/react';
+import { Polybase } from '@polybase/client';
+
+import { ThirdwebProvider } from '@thirdweb-dev/react';
+
+export const polybase = new Polybase({
+	defaultNamespace: POLYBASE_NAMESPACE,
+});
 
 const lightTheme = createTheme({
 	type: 'light',
@@ -27,6 +36,7 @@ export const MinaContext = React.createContext<{
 const Layout = ({ children }: Props) => {
 	const [address, setAddress] = React.useState<string>('');
 	const [zkAppInstance, setZkAppInstance] = React.useState<Talents>();
+
 	React.useEffect(() => {
 		(async () => {
 			const { Mina, PublicKey } = await import('snarkyjs');
@@ -38,16 +48,20 @@ const Layout = ({ children }: Props) => {
 	}, []);
 
 	return (
-		<MinaContext.Provider value={{ address, setAddress }}>
-			<ZKTalentContext.Provider value={{ zkTalents: zkAppInstance }}>
-				<NextUIProvider theme={lightTheme}>
-					<>
-						<NavBar />
-						{children}
-					</>
-				</NextUIProvider>
-			</ZKTalentContext.Provider>
-		</MinaContext.Provider>
+		<ThirdwebProvider theme='light'>
+			<MinaContext.Provider value={{ address, setAddress }}>
+				<ZKTalentContext.Provider value={{ zkTalents: zkAppInstance }}>
+					<PolybaseProvider polybase={polybase}>
+						<NextUIProvider theme={lightTheme}>
+							<>
+								<NavBar />
+								{children}
+							</>
+						</NextUIProvider>
+					</PolybaseProvider>
+				</ZKTalentContext.Provider>
+			</MinaContext.Provider>
+		</ThirdwebProvider>
 	);
 };
 

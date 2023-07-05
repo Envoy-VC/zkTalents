@@ -16,3 +16,16 @@ export type SalaryTypes =
 	| '100-150k'
 	| '150-200k'
 	| '200k+';
+
+export type GithubConfig = {
+	name: 'github';
+	minimumPullRequests: string;
+	createdBefore: string;
+};
+
+export type GitcoinPassportConfig = {
+	name: 'gitcoin-passport';
+	threshold: string;
+};
+
+export type RequirementsConfig = GitcoinPassportConfig | GithubConfig;

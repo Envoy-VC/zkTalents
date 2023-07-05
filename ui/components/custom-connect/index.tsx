@@ -3,16 +3,15 @@ import { Button, Dropdown, Avatar } from '@nextui-org/react';
 
 import { Notification, Setting } from 'react-iconly';
 
-import { NavBarItems } from '../navbar';
 import { MinaContext } from '../layout';
 
 const CustomConnect = () => {
 	const { address, setAddress } = React.useContext(MinaContext);
+
 	const handleConnect = async () => {
 		try {
 			let addresses = await (window as any).mina.requestAccounts();
 			setAddress(addresses[0]);
-			console.log(addresses);
 		} catch (error) {
 			console.log(error);
 		}
@@ -37,7 +36,7 @@ const CustomConnect = () => {
 							as='button'
 							color='secondary'
 							size='lg'
-							src='https://avatars.githubusercontent.com/u/65389981?v=4'
+							text={address!.slice(0, 3)}
 							crossOrigin='anonymous'
 						/>
 					</Dropdown.Trigger>
