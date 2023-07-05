@@ -140,12 +140,12 @@ describe('Talents.js', () => {
       const pb: PublicKey = deployerPubkey;
       const sk: Signature = Signature.create(
         PrivateKey.fromBase58(testOraclePrivateKey),
-        [Field.fromFields(pb.toFields()), Field(50)]
+        [Field.fromFields(pb.toFields()), Field(1)]
       );
 
       // apply talent
       const txn2 = await Mina.transaction(deployerPubkey, () => {
-        zkTalentInstance.applyToTalent(pb, Field(50), sk);
+        zkTalentInstance.applyToTalent(pb, Field(1), sk);
       });
 
       await txn2.prove();
@@ -184,12 +184,12 @@ describe('Talents.js', () => {
       const pb: PublicKey = deployerPubkey;
       const sk: Signature = Signature.create(
         PrivateKey.fromBase58(testOraclePrivateKey),
-        [Field.fromFields(pb.toFields()), Field(50)]
+        [Field.fromFields(pb.toFields()), Field(1)]
       );
 
       // apply talent
       const txn2 = await Mina.transaction(deployerPubkey, () => {
-        zkTalentInstance.applyToTalent(pb, Field(50), sk);
+        zkTalentInstance.applyToTalent(pb, Field(1), sk);
       });
 
       await txn2.prove();
@@ -197,7 +197,7 @@ describe('Talents.js', () => {
 
       const events = await zkTalentInstance.fetchEvents();
       const verifiedEventValue = events[0].event.data;
-      expect(verifiedEventValue).toEqual({ pb, eligibilityScore: Field(50) });
+      expect(verifiedEventValue).toEqual({ pb, eligible: Field(1) });
     });
     it('throws an error if talent is not eligible', async () => {
       const zkTalentInstance = new Talents(zkAppPubKey);
@@ -211,18 +211,18 @@ describe('Talents.js', () => {
       const pb: PublicKey = deployerPubkey;
       const sk: Signature = Signature.create(
         PrivateKey.fromBase58(testOraclePrivateKey),
-        [Field.fromFields(pb.toFields()), Field(10)]
+        [Field.fromFields(pb.toFields()), Field(0)]
       );
 
       // apply talent
       expect(
         async () =>
           await Mina.transaction(deployerPubkey, () => {
-            zkTalentInstance.applyToTalent(pb, Field(10), sk);
+            zkTalentInstance.applyToTalent(pb, Field(0), sk);
           })
       ).rejects;
     });
-    it('throws an error if talent is eligible but signature is correct', async () => {
+    it('throws an error if talent is eligible but signature is not correct', async () => {
       const zkTalentInstance = new Talents(zkAppPubKey);
       await localDeploy(
         zkTalentInstance,
@@ -241,7 +241,7 @@ describe('Talents.js', () => {
       expect(
         async () =>
           await Mina.transaction(deployerPubkey, () => {
-            zkTalentInstance.applyToTalent(pb, Field(50), sk);
+            zkTalentInstance.applyToTalent(pb, Field(1), sk);
           })
       ).rejects;
     });

@@ -17,7 +17,7 @@ export const ORACLE_PUBLIC_KEY =
   'B62qp2oQ8LS4qzXAhQXBrurVowJpEwD4coYvejU4FvZGVDeFf1AMRES';
 class ApplyTalent extends Struct({
   pb: PublicKey,
-  eligibilityScore: Field,
+  eligible: Field,
 }) {}
 export class Talents extends SmartContract {
   @state(PublicKey) oraclePublicKey = State<PublicKey>();
@@ -69,13 +69,7 @@ export class Talents extends SmartContract {
    * @param  {Field} isEligible
    * @param  {Signature} signature
    */
-  @method applyToTalent(
-    pb: PublicKey,
-    eligibilityScore: Field,
-    signature: Signature
-  ) {
-    // eligibilityScore should be the average of the requirements score normalised to a 100 mark
-
+  @method applyToTalent(pb: PublicKey, eligible: Field, signature: Signature) {
     // Get Oracle Public Key
     const oraclePublicKey = this.oraclePublicKey.get();
     this.oraclePublicKey.assertEquals(oraclePublicKey);
@@ -84,13 +78,13 @@ export class Talents extends SmartContract {
     // Verify Signature
     const validSignature = signature.verify(oraclePublicKey, [
       pbToField,
-      eligibilityScore,
+      eligible,
     ]);
     validSignature.assertTrue();
 
     // Check if the applicant is eligible
-    eligibilityScore.assertGreaterThanOrEqual(Field(50), 'Not Eligible');
-    this.emitEvent('apply-talent', { pb, eligibilityScore });
+    eligible.assertEquals(Field(1), 'Not Eligible');
+    this.emitEvent('apply-talent', { pb, eligible });
   }
 
   // TODO merkle map that keeps track of applications
