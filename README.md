@@ -24,3 +24,5 @@ npm run coverage
 ## License
 
 [MIT](LICENSE)
+
+[challenges](challenges.md)
