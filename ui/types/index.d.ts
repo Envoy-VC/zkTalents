@@ -29,3 +29,7 @@ export type GitcoinPassportConfig = {
 };
 
 export type RequirementsConfig = GitcoinPassportConfig | GithubConfig;
+
+export interface IAuth {
+	githubLogin?: string;
+}

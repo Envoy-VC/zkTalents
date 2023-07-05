@@ -5,7 +5,7 @@ import NestedLayout from '@/components/layout/nested-layout';
 import { MinaContext } from '@/components/layout';
 import { usePolybase, useDocument } from '@polybase/react';
 import { useStorage, ConnectWallet, useAddress } from '@thirdweb-dev/react';
-
+import { AuthContext } from '@/components/layout';
 import { Input, Button, Avatar, Loading } from '@nextui-org/react';
 import { GitHubIcon } from '@/components/icons';
 import { Upload, Edit } from 'react-iconly';
@@ -16,11 +16,11 @@ import { Layout } from '@/components';
 
 const Dashboard: NextPageWithLayout = () => {
 	const { address: minaAddress } = React.useContext(MinaContext);
+	const { auth, setAuth } = React.useContext(AuthContext);
 	const address = useAddress();
 	const storage = useStorage();
 
 	const [rerender, setRerender] = React.useState<boolean>(false);
-	const [username, setUsername] = React.useState<string>();
 
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -126,7 +126,7 @@ const Dashboard: NextPageWithLayout = () => {
 				})
 				.then((data) => {
 					console.log(data);
-					setUsername(data.login);
+					setAuth({ ...auth, githubLogin: data.login });
 				});
 		};
 		if (localStorage.getItem('accessToken') !== null) getUserData();
@@ -196,7 +196,7 @@ const Dashboard: NextPageWithLayout = () => {
 					onChange={(e) => setProfile({ ...profile, name: e.target.value })}
 				/>
 				<div>
-					{username ? (
+					{auth?.githubLogin ? (
 						<Button
 							auto
 							light
@@ -205,11 +205,11 @@ const Dashboard: NextPageWithLayout = () => {
 							className='!bg-[#141414] !text-white !w-fit'
 							onPress={() => {
 								localStorage.removeItem('accessToken');
-								setUsername('');
+								setAuth({ ...auth, githubLogin: '' });
 								setRerender(!rerender);
 							}}
 						>
-							{username}
+							{auth?.githubLogin}
 						</Button>
 					) : (
 						<Button
