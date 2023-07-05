@@ -1,5 +1,3 @@
-export {};
-
 function loadCOIServiceWorker() {
 	if (typeof window !== 'undefined') {
 		const coi = window.document.createElement('script');
@@ -9,3 +7,5 @@ function loadCOIServiceWorker() {
 }
 
 loadCOIServiceWorker();
+
+export default loadCOIServiceWorker;
