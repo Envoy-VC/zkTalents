@@ -3,7 +3,7 @@ import React from 'react';
 import BasicDetails from './basic-details';
 import AdminDetails from './admin-details';
 
-import { GithubConfig, GitcoinPassportConfig } from '@/types';
+import { GithubConfig } from '@/types';
 
 export type CreateFormStepProps = 'basic' | 'settings';
 
@@ -15,8 +15,7 @@ export interface FormProps {
 	location: string;
 	salary: string;
 	tagList?: string[];
-	githubConfig: GithubConfig;
-	gitcoinPassportConfig: GitcoinPassportConfig;
+	github: GithubConfig;
 }
 
 const TalentForm = () => {
@@ -28,14 +27,9 @@ const TalentForm = () => {
 		talentTitle: '',
 		location: '',
 		salary: '',
-		githubConfig: {
-			name: 'github',
+		github: {
 			createdBefore: '',
 			minimumPullRequests: '',
-		},
-		gitcoinPassportConfig: {
-			name: 'gitcoin-passport',
-			threshold: '',
 		},
 	});
 

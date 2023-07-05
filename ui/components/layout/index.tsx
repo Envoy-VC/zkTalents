@@ -2,12 +2,17 @@ import React from 'react';
 import { createTheme, NextUIProvider } from '@nextui-org/react';
 import NavBar from '../navbar';
 import { zkTalentsPublicKey } from '@/config';
-import { Talents } from '@envoy1084/zktalents';
+import { Field, PublicKey } from 'snarkyjs';
 import { POLYBASE_NAMESPACE } from '@/config';
 import { PolybaseProvider } from '@polybase/react';
 import { Polybase } from '@polybase/client';
 import { IAuth } from '@/types';
 import { ThirdwebProvider } from '@thirdweb-dev/react';
+import { zkTalentsContextState } from '@/types';
+
+import '../../pages/reactCOIServiceWorker';
+
+import ZkappWorkerClient from '@/pages/zkappWorkerClient';
 
 export const polybase = new Polybase({
 	defaultNamespace: POLYBASE_NAMESPACE,
@@ -30,7 +35,8 @@ export const AuthContext = React.createContext<{
 });
 
 export const ZKTalentContext = React.createContext<{
-	zkTalents?: Talents;
+	state?: zkTalentsContextState;
+	setState?: React.Dispatch<React.SetStateAction<zkTalentsContextState>>;
 }>({});
 
 export const MinaContext = React.createContext<{
@@ -43,7 +49,12 @@ export const MinaContext = React.createContext<{
 
 const Layout = ({ children }: Props) => {
 	const [address, setAddress] = React.useState<string>('');
-	const [zkAppInstance, setZkAppInstance] = React.useState<Talents>();
+	let [state, setState] = React.useState<zkTalentsContextState>({
+		zkappWorkerClient: null as null | ZkappWorkerClient,
+		hasBeenSetup: false,
+		currentTalentCounter: null as null | Field,
+		creatingTransaction: false,
+	});
 	const [auth, setAuth] = React.useState<IAuth>({});
 
 	React.useEffect(() => {
@@ -66,12 +77,50 @@ const Layout = ({ children }: Props) => {
 	}, []);
 
 	React.useEffect(() => {
-		(async () => {
-			const { Mina, PublicKey } = await import('snarkyjs');
-			const { Talents } = await import('@envoy1084/zktalents');
+		async function timeout(seconds: number): Promise<void> {
+			return new Promise<void>((resolve) => {
+				setTimeout(() => {
+					resolve();
+				}, seconds * 1000);
+			});
+		}
 
-			const zkTalents = new Talents(PublicKey.fromBase58(zkTalentsPublicKey));
-			setZkAppInstance(zkTalents);
+		(async () => {
+			if (!state.hasBeenSetup) {
+				try {
+					console.log('Initializing worker client.');
+					const zkappWorkerClient = new ZkappWorkerClient();
+
+					await timeout(5);
+
+					console.log('Switching to Berkeley...');
+					await zkappWorkerClient.setActiveInstanceToBerkeley();
+					console.log('Loading contract...');
+					await zkappWorkerClient.loadContract();
+					console.log('Compiling contract...');
+					await zkappWorkerClient.compileContract();
+					console.log('zkApp compiled');
+					const zkappPublicKey = PublicKey.fromBase58(zkTalentsPublicKey);
+					console.log('Initializing zkapp instance...');
+					await zkappWorkerClient.initZkappInstance(zkappPublicKey);
+					console.log('getting zkApp state...');
+					await zkappWorkerClient.fetchAccount({ publicKey: zkappPublicKey });
+					const currentTalentCounter =
+						await zkappWorkerClient.getTalentCounter();
+					console.log('currentTalentCounter', currentTalentCounter.toString());
+
+					setState({
+						...state,
+						zkappWorkerClient,
+						hasBeenSetup: true,
+						currentTalentCounter,
+					});
+				} catch (error) {
+					console.log(error);
+				} finally {
+					console.log('exit');
+				}
+			}
 		})();
 	}, []);
 
@@ -79,13 +128,17 @@ const Layout = ({ children }: Props) => {
 		<ThirdwebProvider theme='light'>
 			<MinaContext.Provider value={{ address, setAddress }}>
 				<AuthContext.Provider value={{ auth, setAuth }}>
-					<ZKTalentContext.Provider value={{ zkTalents: zkAppInstance }}>
+					<ZKTalentContext.Provider value={{ state, setState }}>
 						<PolybaseProvider polybase={polybase}>
 							<NextUIProvider theme={lightTheme}>
-								<>
-									<NavBar />
-									{children}
-								</>
+								{state.hasBeenSetup ? (
+									<>
+										<NavBar />
+										{children}
+									</>
+								) : (
+									<div>loading...</div>
+								)}
 							</NextUIProvider>
 						</PolybaseProvider>
 					</ZKTalentContext.Provider>

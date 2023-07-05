@@ -18,18 +18,20 @@ export type SalaryTypes =
 	| '200k+';
 
 export type GithubConfig = {
-	name: 'github';
-	minimumPullRequests: string;
-	createdBefore: string;
+	minimumPullRequests?: string;
+	createdBefore?: string;
 };
-
-export type GitcoinPassportConfig = {
-	name: 'gitcoin-passport';
-	threshold: string;
-};
-
-export type RequirementsConfig = GitcoinPassportConfig | GithubConfig;
 
 export interface IAuth {
 	githubLogin?: string;
+}
+
+import ZkappWorkerClient from '@/pages/zkappWorkerClient';
+import { Field } from 'snarkyjs';
+
+export interface zkTalentsContextState {
+	zkappWorkerClient: ZkappWorkerClient | null;
+	hasBeenSetup: boolean;
+	currentTalentCounter: Field | null;
+	creatingTransaction: boolean;
 }

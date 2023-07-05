@@ -66,7 +66,7 @@ export class Talents extends SmartContract {
 
   /**
    * @param  {PublicKey} pb
-   * @param  {Field} isEligible
+   * @param  {Field} eligible
    * @param  {Signature} signature
    */
   @method applyToTalent(pb: PublicKey, eligible: Field, signature: Signature) {
@@ -86,6 +86,4 @@ export class Talents extends SmartContract {
     eligible.assertEquals(Field(1), 'Not Eligible');
     this.emitEvent('apply-talent', { pb, eligible });
   }
-
-  // TODO merkle map that keeps track of applications
 }

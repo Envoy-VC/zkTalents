@@ -8,6 +8,14 @@
       "feepayerAlias": "dev",
       "fee": "0.1",
       "smartContract": "Talents"
+    },
+    "zktalents": {
+      "url": "https://berkeley.minascan.io/graphql",
+      "keyPath": "keys/zktalents.json",
+      "feepayerKeyPath": "C:\\Users\\vedan/.cache/zkapp-cli/keys/dev.json",
+      "feepayerAlias": "dev",
+      "fee": "0.1",
+      "smartContract": "Talents"
     }
   }
 }

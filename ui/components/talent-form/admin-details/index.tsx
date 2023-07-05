@@ -1,9 +1,13 @@
 import React from 'react';
 
+import { useStorage } from '@thirdweb-dev/react';
 import { Button, Input } from '@nextui-org/react';
 import { Work, CaretLeft } from 'react-iconly';
-
+import { ZKTalentContext, MinaContext } from '@/components/layout';
+import { PublicKey } from 'snarkyjs';
 import { CreateFormStepProps, FormProps } from '..';
+
+import { usePolybase, useDocument } from '@polybase/react';
 
 interface Props {
 	step: CreateFormStepProps;
@@ -12,8 +16,42 @@ interface Props {
 }
 
 const AdminDetails = ({ step, setStep, form }: Props) => {
+	const { address: minaAddress } = React.useContext(MinaContext);
+	const { state, setState } = React.useContext(ZKTalentContext);
+	const storage = useStorage();
+	const polybase = usePolybase();
+
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
 	const handleSubmit = async () => {
-		console.log(form);
+		try {
+			setIsLoading(true);
+			// TODO: Upload to IPFS
+			/*
+			const uri = await storage!.upload(JSON.stringify(form), {
+				uploadWithoutDirectory: true,
+			});
+			const cid = 'https://ipfs.io/ipfs/' + uri.split('ipfs://')[1];
+			*/
+			// TODO: Call zkApp
+			await state?.zkappWorkerClient?.createTalentTransaction(
+				PublicKey.fromBase58(minaAddress)
+			);
+			await state?.zkappWorkerClient?.proveUpdateTransaction();
+			const tx = await state?.zkappWorkerClient?.getTransactionJSON();
+			console.log(tx);
+			// TODO: Add to Polybase
+			/*
+			await polybase
+				.collection('Talents')
+				.record('root')
+				.call('addTalent', [cid]);
+				*/
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 	return (
 		<div className='flex flex-col justify-center w-full max-w-screen-md gap-6 my-8 font-orkneyRegular'>
@@ -26,38 +64,16 @@ const AdminDetails = ({ step, setStep, form }: Props) => {
 					labelLeft='Created Before'
 					placeholder='15'
 					type='date'
-					onChange={(e) => (form.githubConfig.createdBefore = e.target.value)}
+					onChange={(e) => (form.github.createdBefore = e.target.value)}
 				/>
 				<Input
 					labelLeft='Minimum Pull Requests'
 					placeholder='15'
-					type='number'
-					initialValue={
-						form.githubConfig.minimumPullRequests
-							? form.githubConfig.minimumPullRequests
-							: ''
-					}
-					onChange={(e) =>
-						(form.githubConfig.minimumPullRequests = e.target.value)
-					}
+					type='string'
+					initialValue={form.github.minimumPullRequests || ''}
+					onChange={(e) => (form.github.minimumPullRequests = e.target.value)}
 				/>
 			</div>
-			<div className='mb-4 text-2xl font-semibold'>
-				Gitcoin Passport Requirements
-			</div>
-			<Input
-				labelLeft='Threshold Score'
-				placeholder='10'
-				type='string'
-				initialValue={
-					form.gitcoinPassportConfig.threshold
-						? form.gitcoinPassportConfig.threshold
-						: ''
-				}
-				onChange={(e) =>
-					(form.gitcoinPassportConfig.threshold = e.target.value)
-				}
-			/>
 			<div className='flex justify-between'>
 				<Button
 					auto

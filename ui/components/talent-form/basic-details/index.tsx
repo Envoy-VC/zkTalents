@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Input, Avatar, Button, Card } from '@nextui-org/react';
+import { Input, Avatar, Button, Card, Loading } from '@nextui-org/react';
+import { useStorage } from '@thirdweb-dev/react';
 import { Upload, Plus, Delete, ArrowRight } from 'react-iconly';
 import { CreateFormStepProps, FormProps } from '..';
 
@@ -13,6 +14,9 @@ interface Props {
 const BasicDetails = ({ step, setStep, form }: Props) => {
 	const [tags, setTags] = React.useState<string>('');
 	const [tagList, setTagList] = React.useState<string[]>([]);
+
+	const storage = useStorage();
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
 	const handleAddTag = (tag: string) => {
 		if (tagList.includes(tag)) {
@@ -28,6 +32,19 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 		const list = tagList;
 		list.splice(index, 1);
 		setTagList([...list]);
+	};
+
+	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		try {
+			setIsLoading(true);
+			const file = e.target.files![0];
+			const uri = await storage!.upload(file, { uploadWithoutDirectory: true });
+			form.companyLogo = 'https://ipfs.io/ipfs/' + uri.split('ipfs://')[1];
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	React.useEffect(() => {
@@ -60,9 +77,11 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 					/>
 				</div>
 				<div className='flex flex-col items-center justify-center'>
-					{/* // TODO: Add image upload */}
 					<Avatar
-						src='https://avatars.githubusercontent.com/u/65389981?v=4'
+						src={
+							form.companyLogo ||
+							'https://avatars.githubusercontent.com/u/65389981?v=4'
+						}
 						className='mb-4 rounded-full !w-28 !h-28'
 						alt='Profile Picture'
 						color='primary'
@@ -79,6 +98,7 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 							className='max-w-[200px]'
 							placeholder=''
 							accept='image/*'
+							onChange={(e) => handleFileChange(e)}
 						/>
 					</Button>
 				</div>
@@ -154,12 +174,20 @@ const BasicDetails = ({ step, setStep, form }: Props) => {
 				<Button
 					auto
 					light
-					iconRight={<ArrowRight set='bold' primaryColor='#fff' size={28} />}
+					iconRight={
+						!isLoading && (
+							<ArrowRight set='bold' primaryColor='#fff' size={28} />
+						)
+					}
 					size='lg'
 					className='!bg-[#141414] !text-white !mt-4 !w-fit'
 					onPress={() => setStep('settings')}
 				>
-					Eligibility Details
+					{isLoading ? (
+						<Loading size='sm' color='white' />
+					) : (
+						'Eligibility Details'
+					)}
 				</Button>
 			</div>
 		</div>

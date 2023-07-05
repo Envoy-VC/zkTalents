@@ -10,7 +10,7 @@
 		"ts-watch": "tsc --noEmit --incremental --watch"
 	},
 	"dependencies": {
-		"@envoy1084/zktalents": "^0.1.0",
+		"@envoy1084/zktalents": "^0.1.1",
 		"@nextui-org/react": "^1.0.0-beta.13",
 		"@polybase/client": "^0.6.2",
 		"@polybase/react": "^0.6.2",
