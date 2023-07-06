@@ -6,4 +6,4 @@ With zkTalents, employers have the flexibility to define various criteria for jo
 
 To explore the inner workings of zkTalents, you can check into the `contracts` directory, where you will find the contract implementation and the Oracle's functionality.
 
-
+[challenges](challenges.md)
