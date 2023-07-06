@@ -10,7 +10,16 @@ import { IAuth } from '@/types';
 import { ThirdwebProvider } from '@thirdweb-dev/react';
 import { zkTalentsContextState } from '@/types';
 
-import '../../pages/reactCOIServiceWorker';
+function loadCOIServiceWorker() {
+	if (typeof window !== 'undefined') {
+		const coi = window.document.createElement('script');
+		coi.setAttribute('src', '/coi-serviceworker.min.js');
+		window.document.head.appendChild(coi);
+		console.log('added script');
+	}
+}
+
+loadCOIServiceWorker();
 
 import ZkappWorkerClient from '@/utils/zkappWorkerClient';
 
