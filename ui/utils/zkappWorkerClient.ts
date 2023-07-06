@@ -1,16 +1,10 @@
-import {
-	fetchAccount,
-	PublicKey,
-	PrivateKey,
-	Field,
-	Signature,
-} from 'snarkyjs';
+import { fetchAccount, PublicKey, Field, Signature } from 'snarkyjs';
 
 import type {
 	ZkappWorkerRequest,
 	ZkappWorkerReponse,
 	WorkerFunctions,
-} from './zkappWorker';
+} from '../utils/zkappWorker';
 
 export default class ZkappWorkerClient {
 	// ---------------------------------------------------------------------------------------

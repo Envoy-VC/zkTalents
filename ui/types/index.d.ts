@@ -26,7 +26,7 @@ export interface IAuth {
 	githubLogin?: string;
 }
 
-import ZkappWorkerClient from '@/pages/zkappWorkerClient';
+import ZkappWorkerClient from '@/utils/zkappWorkerClient';
 import { Field } from 'snarkyjs';
 
 export interface zkTalentsContextState {

@@ -12,7 +12,7 @@ import { zkTalentsContextState } from '@/types';
 
 import '../../pages/reactCOIServiceWorker';
 
-import ZkappWorkerClient from '@/pages/zkappWorkerClient';
+import ZkappWorkerClient from '@/utils/zkappWorkerClient';
 
 export const polybase = new Polybase({
 	defaultNamespace: POLYBASE_NAMESPACE,
@@ -131,14 +131,10 @@ const Layout = ({ children }: Props) => {
 					<ZKTalentContext.Provider value={{ state, setState }}>
 						<PolybaseProvider polybase={polybase}>
 							<NextUIProvider theme={lightTheme}>
-								{state.hasBeenSetup ? (
-									<>
-										<NavBar />
-										{children}
-									</>
-								) : (
-									<div>loading...</div>
-								)}
+								<>
+									<NavBar />
+									{children}
+								</>
 							</NextUIProvider>
 						</PolybaseProvider>
 					</ZKTalentContext.Provider>

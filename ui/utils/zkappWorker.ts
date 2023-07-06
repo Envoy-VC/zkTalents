@@ -96,4 +96,4 @@ if (typeof window !== 'undefined') {
 	);
 }
 
-export default ZkappWorkerReponse;
+export {};
